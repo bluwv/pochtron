@@ -10,4 +10,8 @@
 @use '4-elements/base';
 
 /// 6-COMPONENTS
+@use '6-components/button';
+@use '6-components/form';
+
+@use '6-components/edit';
 @use '6-components/login';

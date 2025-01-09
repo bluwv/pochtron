@@ -2,8 +2,12 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 0 8vw;
+	// padding: 0 8vw;
 	min-height: 100vh;
+}
+
+::placeholder {
+	color: rgba(#D9E5F2, .4);
 }
 
 .login {
@@ -13,6 +17,19 @@
 
 	a {
 		color: var(--theme-color-secondary);
+	}
+
+	[type="submit"] {
+		margin-top: 3.2rem;
+		width: 100%;
+	}
+
+	.link-reset-password {
+		display: inline-block;
+		margin-top: 2rem;
+		font-size: 1.2rem;
+		text-decoration: none;
+		color: var(--theme-color-white);
 	}
 }
 

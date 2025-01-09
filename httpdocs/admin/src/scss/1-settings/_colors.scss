@@ -4,6 +4,7 @@ $SoftPumice: rgba(#949DA5, .08);
 $VividBlue: #203EFF;
 $ClearChill: #208FFF;
 $SpaceWolvesGrey: #D9E5F2;
+$CamaronPink: #FF818B;
 
 :root {
 	--theme-color-primary: #{ $VividBlue };
@@ -12,4 +13,5 @@ $SpaceWolvesGrey: #D9E5F2;
 	--theme-color-grey: #{ $SoftPumice };
 	--theme-color-black: #{ $BlackStallion };
 	--theme-color-white: #{ $SpaceWolvesGrey };
+	--theme-color-red: #{ $CamaronPink };
 }

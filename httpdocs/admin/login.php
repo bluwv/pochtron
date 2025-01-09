@@ -15,18 +15,22 @@
 				<h1>Welcome Back</h1>
 				<p>Don’t have an account yet? <a href="#">Sign up</a></p>
 
-				<form method="POST" action="../app/login.php" novalidate>
-					<label for="username">email address</label>
-					<input id="username" type="email" name="username" placeholder="name@gmail.com" required>
+				<form method="POST" action="edit.php" novalidate>
+					<div class="form-row">
+						<label for="username">email address</label>
+						<input id="username" type="email" name="username" placeholder="name@gmail.com" required>
+					</div>
 
-					<label for="password">password</label>
-					<input  id="password" type="password" name="password" placeholder="******" required>
+					<div class="form-row">
+						<label for="password">password</label>
+						<input  id="password" type="password" name="password" placeholder="******" required>
+					</div>
 
-					<input type="submit" value="Login">
+					<!-- <input type="submit" value="Login"> -->
 					<button type="submit">Login</button>
 				</form>
 
-				<a href="#">I lost password</a>
+				<a class="link-reset-password" href="#">I lost password</a>
 			</section>
 		</main>
 	</div>
