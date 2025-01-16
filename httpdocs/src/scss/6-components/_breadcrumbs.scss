@@ -1,0 +1,39 @@
+.breadcrumbs {
+	padding: .8rem 12rem;
+	background: var(--theme-color-white);
+
+	ol {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	a {
+		display: flex;
+		flex-direction: row-reverse;
+		gap: 1rem;
+		align-items: center;
+		position: relative;
+		text-decoration: none;
+		color: var(--black);
+
+		&::before {
+			content: "";
+			display: block;
+			transform: rotate(45deg);
+			width: 1rem;
+			height: 1rem;
+			border: 2px solid var(--theme-color-grey-500);
+			border-left: none;
+			border-bottom: none;
+		}
+
+		&:hover {
+			color: var(--theme-color-primary);
+		}
+	}
+
+	span {
+		color: var(--theme-color-grey-500);
+	}
+}

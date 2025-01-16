@@ -1,0 +1,29 @@
+/// https://color-name-generator.com/
+$BlackStallion: #101820;
+$SoftPumice: #949DA5;
+$CommonFeldspar: #848C95;
+$VividBlue: #203EFF;
+$ClearChill: #208FFF;
+$SpaceWolvesGrey: #D9E5F2;
+$CamaronPink: #FF818B;
+
+:root {
+	--theme-color-primary: #{ $VividBlue };
+	--theme-color-secondary: #{ $ClearChill };
+
+	--theme-color-black: #{ $BlackStallion };
+	--theme-color-white: #{ $SpaceWolvesGrey };
+
+	--theme-color-grey-100: #{ rgba($SoftPumice, .08) };
+	--theme-color-grey-200: #{ $CommonFeldspar };
+	--theme-color-grey-300: #{ $CommonFeldspar };
+	--theme-color-grey-400: #{ $CommonFeldspar };
+	--theme-color-grey-500: #{ $CommonFeldspar };
+	--theme-color-grey-600: #{ $CommonFeldspar };
+	--theme-color-grey-700: #{ $CommonFeldspar };
+	--theme-color-grey-800: #{ $CommonFeldspar };
+	--theme-color-grey-900: #{ $CommonFeldspar };
+	--theme-color-grey: #{ $SoftPumice };
+
+	--theme-color-red: #{ $CamaronPink };
+}

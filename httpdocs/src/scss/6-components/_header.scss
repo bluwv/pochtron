@@ -1,0 +1,48 @@
+.site-header {
+	padding: 7.2rem 12rem 4rem;
+
+	& > div:first-child {
+		display: flex;
+		gap: 8rem;
+		align-items: baseline;
+	}
+
+	ol {
+		display: flex;
+		gap: 2.4rem;
+		align-items: center;
+		margin-left: auto;
+		margin-right: 0;
+	}
+}
+
+.logo {
+	font-family: var(--theme-font-primary);
+	font-weight: 600;
+	font-size: 2.4rem;
+	text-decoration: none;
+
+	span {
+		color: var(--theme-color-grey);
+	}
+}
+
+.menu-primary {
+	ul {
+		display: flex;
+		gap: 4rem;
+		align-items: center;
+	}
+
+	a {
+		font-family: var(--theme-font-primary);
+		font-weight: 400;
+		font-size: 1.4rem;
+		text-decoration: none;
+		transition: all .3s ease-out;
+
+		&:hover {
+			color: var(--theme-color-primary);
+		}
+	}
+}
