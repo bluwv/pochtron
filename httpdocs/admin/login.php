@@ -15,7 +15,7 @@
 				<h1>Welcome Back</h1>
 				<p>Don’t have an account yet? <a href="#">Sign up</a></p>
 
-				<form method="POST" action="edit.php" novalidate>
+				<form method="POST" action="list.php" novalidate>
 					<div class="form-row">
 						<label for="username">email address</label>
 						<input id="username" type="email" name="username" placeholder="name@gmail.com" required>
