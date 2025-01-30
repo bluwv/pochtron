@@ -1,3 +1,37 @@
+<?php
+
+session_start();
+
+if ( ! empty( $_SESSION ) && $_SESSION['token'] ) {
+	header('Location: list.php');
+}
+
+require_once '../../app/database.php';
+
+if ( ! empty( $_POST ) ) {
+	// $_SESSION["login"] = $_POST['login'];
+	$sql = "SELECT password
+		FROM users
+		WHERE login = :login OR email = :email ";
+
+	$stmt = $db->prepare($sql);
+
+	$stmt->bindValue(':login', $_POST['username']);
+	$stmt->bindValue(':email', $_POST['username']);
+
+	$stmt->execute();
+	$user = $stmt->fetch();
+
+	if (password_verify($_POST['password'], $user->password)) {
+		$_SESSION['login'] = $user->login;
+		$_SESSION['token'] = time() + 60 * 60 * 24 * 2;
+
+		header('Location: list.php');
+	}
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +49,7 @@
 				<h1>Welcome Back</h1>
 				<p>Don’t have an account yet? <a href="#">Sign up</a></p>
 
-				<form method="POST" action="list.php" novalidate>
+				<form method="POST" action="" novalidate>
 					<div class="form-row">
 						<label for="username">email address</label>
 						<input id="username" type="email" name="username" placeholder="name@gmail.com" required>

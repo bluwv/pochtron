@@ -1,16 +1,21 @@
 <?php
 
+session_start();
+if ( $_SESSION['token'] < time() ) {
+	session_destroy();
+	header('Location: login.php');
+}
+
 require_once '../../app/database.php';
 
 $wines_limit = 20;
-$wines_offset = (int)$_GET['page'];
+$wines_offset = ($_GET['page'] ?? 0) * $wines_limit;
 
-$sql = "SELECT wines.name, grapes.color, producers.domain, producers.region, wines.year, wines.price, wines.format, wines.stock, grapes.name as grapes_name
+$sql = "SELECT wines.id as wine_id, wines.name, grapes.color, producers.domain, producers.region, wines.year, wines.price, wines.format, wines.stock, grapes.name as grapes_name
 		FROM wines
 		JOIN producers ON wines.id_producer = producers.id
 		JOIN grapes ON wines.id_grapes = grapes.id
-		LIMIT $wines_limit
-		OFFSET $wines_offset";
+		LIMIT $wines_limit OFFSET $wines_offset";
 
 $stmt = $db->prepare($sql);
 $stmt->execute();
@@ -61,7 +66,9 @@ $results = $stmt->fetchAll();
 						<tbody>
 							<?php foreach ( $results as $result ) : ?>
 								<tr>
-									<td><?php echo $result->name; ?></td>
+									<td>
+										<a href="edit.php?wine_id=<?php echo $result->wine_id; ?>"><?php echo $result->name; ?></a>
+									</td>
 									<td><?php echo $result->color; ?></td>
 									<td><?php echo $result->domain; ?></td>
 									<td><?php echo $result->region; ?></td>
@@ -99,7 +106,7 @@ $results = $stmt->fetchAll();
 
 			<div class="admin-menu">
 				<a href="#">Pochtron.be</a>
-				<a class="logout" href="#">Déconnexion</a>
+				<a class="logout" href="logout.php">Déconnexion</a>
 			</div>
 		</main>
 	</div>

@@ -129,9 +129,16 @@ input {
   padding: 1.4rem 2.4rem 1.2rem;
   width: 100%;
   font-size: 1.2rem;
-  background-color: var(--theme-color-black);
+  background-color: var(--theme-color-grey);
   border: none;
   border-radius: 0.4rem;
+}
+input .login {
+  background-color: var(--theme-color-black);
+}
+
+.honeypot {
+  display: none;
 }
 
 .edit #app {

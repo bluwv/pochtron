@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "sass": "sass --watch httpdocs/admin/src/scss/app.scss:httpdocs/admin/assets/css/app.css"
+  },
   "devDependencies": {
     "sass": "^1.83.1",
     "tailwindcss": "^3.4.17"
