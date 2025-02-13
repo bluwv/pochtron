@@ -133,7 +133,8 @@ input {
   border: none;
   border-radius: 0.4rem;
 }
-input .login {
+.login input {
+  color: var(--theme-color-white);
   background-color: var(--theme-color-black);
 }
 
@@ -146,23 +147,34 @@ input .login {
   align-items: stretch;
 }
 
-.edit {
+.admin {
   background: var(--theme-color-black);
 }
-.edit .site-main {
+.admin .site-main {
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
+}
+.admin .site-main > section {
+  flex: 1;
+  padding: 6rem;
+  min-height: 100%;
+  background: #fff;
+  border-radius: 0.8rem;
+}
+.admin .site-main > section header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
 }
 
 .admin-menu {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   padding: 4.8rem 2.4rem 3.2rem;
   width: 100%;
-  max-width: 20rem;
+  max-width: 32rem;
   color: var(--theme-color-white);
 }
 .admin-menu a {
@@ -172,18 +184,70 @@ input .login {
   color: var(--theme-color-red);
   text-decoration: underline;
 }
-
-.edit-listing {
-  flex: 1;
-  padding: 6rem;
-  background: #fff;
-  border-radius: 0.8rem;
-}
-.edit-listing header {
+.admin-menu > div:last-of-type {
   display: flex;
+  gap: 1.2rem;
   align-items: center;
-  gap: 2rem;
-  margin-bottom: 4rem;
+  position: relative;
+  margin-top: auto;
+  margin-bottom: 0;
+}
+.admin-menu > div:last-of-type img {
+  display: block;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: var(--theme-color-primary);
+  border-radius: 50%;
+}
+.admin-menu > div:last-of-type button {
+  margin-left: auto;
+  margin-right: 0;
+}
+.admin-menu > div:last-of-type menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1.6rem;
+  transform: translateY(-100%);
+  background: rgba(132, 140, 149, 0.12);
+  border-radius: 0.4rem;
+  transition: all 0.2s ease-out;
+}
+.admin-menu > div:last-of-type menu li:not(:first-child) {
+  margin-top: 1.2rem;
+}
+.admin-menu > div:last-of-type menu li:not(:last-child) {
+  margin-bottom: 1.2rem;
+}
+.admin-menu > div:last-of-type menu:not(.active) {
+  transform: translateY(-80%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.menu li a {
+  display: block;
+  padding: 0.6rem 1.6rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  border-radius: 0.4rem;
+  transition: all 0.2s ease-out;
+}
+.menu li a:hover {
+  background: rgba(132, 140, 149, 0.12);
+}
+.menu li.active a {
+  background-color: var(--theme-color-primary);
+}
+
+.menu-primary {
+  padding: 2.4rem 0;
+}
+
+.menu-secondary {
+  position: relative;
+  padding: 2.4rem 0;
+  border-top: 1px solid #848C95;
 }
 
 table {
@@ -290,6 +354,35 @@ p {
   font-size: 1.6rem;
   line-height: 1.5;
   color: rgba(148, 157, 165, 0.6);
+}
+
+.screen-reader-text {
+  border: 0;
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+.screen-reader-text:focus {
+  background-color: #eee;
+  clip-path: none;
+  color: #444;
+  display: block;
+  font-size: 1em;
+  height: auto;
+  left: 5px;
+  line-height: normal;
+  padding: 15px 23px 14px;
+  text-decoration: none;
+  top: 5px;
+  width: auto;
+  z-index: 100000;
+  /* Above WP toolbar. */
 }
 
 /*# sourceMappingURL=app.css.map */

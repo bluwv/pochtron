@@ -5,24 +5,37 @@
 	}
 }
 
-.edit {
+.admin {
 	background: var(--theme-color-black);
 
 	.site-main {
 		display: flex;
 		flex-direction: row-reverse;
 		width: 100%;
+
+		& > section {
+			flex: 1;
+			padding: 6rem;
+			min-height: 100%;
+			background: #fff;
+			border-radius: .8rem;
+
+			header {
+				display: flex;
+				align-items: center;
+				gap: 2rem;
+				margin-bottom: 4rem;
+			}
+		}
 	}
 }
 
 .admin-menu {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
 	padding: 4.8rem 2.4rem 3.2rem;
 	width: 100%;
-	max-width: 20rem;
+	max-width: 32rem;
 	color: var(--theme-color-white);
 
 	a {
@@ -33,20 +46,85 @@
 		color: var(--theme-color-red);
 		text-decoration: underline;
 	}
+
+	& > div:last-of-type {
+		display: flex;
+		gap: 1.2rem;
+		align-items: center;
+		position: relative;
+		margin-top: auto;
+		margin-bottom: 0;
+
+		img {
+			display: block;
+			width: 2.4rem;
+			height: 2.4rem;
+			background: var(--theme-color-primary);
+			border-radius: 50%;
+		}
+
+		button {
+			margin-left: auto;
+			margin-right: 0;
+		}
+
+		menu {
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 1.6rem;
+			transform: translateY(-100%);
+			background: rgba(#848C95, .12);
+			border-radius: .4rem;
+			transition: all .2s ease-out;
+
+			li:not(:first-child) {
+				margin-top: 1.2rem;
+			}
+
+			li:not(:last-child) {
+				margin-bottom: 1.2rem;
+			}
+
+			&:not(.active) {
+				transform: translateY(-80%);
+				opacity: 0;
+				pointer-events: none;
+			}
+		}
+	}
 }
 
-.edit-listing {
-	flex: 1;
-	padding: 6rem;
-	background: #fff;
-	border-radius: .8rem;
+.menu {
+	li {
+		a {
+			display: block;
+			padding: .6rem 1.6rem;
+			font-size: 1.4rem;
+			line-height: 1.5;
+			border-radius: .4rem;
+			transition: all .2s ease-out;
+		}
 
-	header {
-		display: flex;
-		align-items: center;
-		gap: 2rem;
-		margin-bottom: 4rem;
+		a:hover {
+			background: rgba(#848C95, .12);
+		}
+
+		&.active a {
+			background-color: var(--theme-color-primary);
+		}
+
 	}
+}
+
+.menu-primary {
+	padding: 2.4rem 0;
+}
+
+.menu-secondary {
+	position: relative;
+	padding: 2.4rem 0;
+	border-top: 1px solid #848C95;
 }
 
 table {

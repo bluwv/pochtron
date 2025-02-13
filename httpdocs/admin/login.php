@@ -10,19 +10,19 @@ require_once '../../app/database.php';
 
 if ( ! empty( $_POST ) ) {
 	// $_SESSION["login"] = $_POST['login'];
-	$sql = "SELECT password
+	$sql = "SELECT id, login, password
 		FROM users
-		WHERE login = :login OR email = :email ";
+		WHERE login = :login OR email = :email";
 
 	$stmt = $db->prepare($sql);
 
-	$stmt->bindValue(':login', $_POST['username']);
-	$stmt->bindValue(':email', $_POST['username']);
+	$value = array(':login' => $_POST['username'], ':email' => $_POST['username']);
 
-	$stmt->execute();
+	$stmt->execute( $value );
 	$user = $stmt->fetch();
 
 	if (password_verify($_POST['password'], $user->password)) {
+		$_SESSION['user_id'] = $user->id;
 		$_SESSION['login'] = $user->login;
 		$_SESSION['token'] = time() + 60 * 60 * 24 * 2;
 
@@ -41,7 +41,7 @@ if ( ! empty( $_POST ) ) {
 	<link rel="stylesheet" href="assets/css/app.css">
 </head>
 
-<body class="admin login">
+<body class="login">
 
 	<div id="app">
 		<main class="site-main">
@@ -69,5 +69,6 @@ if ( ! empty( $_POST ) ) {
 		</main>
 	</div>
 
+	<script src="assets/js/app.js"></script>
 </body>
 </html>

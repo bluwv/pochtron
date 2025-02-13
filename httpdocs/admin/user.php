@@ -113,12 +113,10 @@ if ( ! empty( $_GET['user_id'] )) {
 				</div>
 			</section>
 
-			<div class="admin-menu">
-				<a href="#">Pochtron.be</a>
-				<a class="logout" href="#">Déconnexion</a>
-			</div>
+			<?php include_once 'views/components/sidebar.php'; ?>
 		</main>
 	</div>
 
+	<script src="assets/js/app.js"></script>
 </body>
 </html>

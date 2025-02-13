@@ -13,8 +13,8 @@ $wines_offset = ($_GET['page'] ?? 0) * $wines_limit;
 
 $sql = "SELECT wines.id as wine_id, wines.name, grapes.color, producers.domain, producers.region, wines.year, wines.price, wines.format, wines.stock, grapes.name as grapes_name
 		FROM wines
-		JOIN producers ON wines.id_producer = producers.id
-		JOIN grapes ON wines.id_grapes = grapes.id
+		LEFT JOIN producers ON wines.id_producer = producers.id
+		LEFT JOIN grapes ON wines.id_grapes = grapes.id
 		LIMIT $wines_limit OFFSET $wines_offset";
 
 $stmt = $db->prepare($sql);
@@ -39,7 +39,7 @@ $results = $stmt->fetchAll();
 			<section class="edit-listing">
 				<header>
 					<h1>Listing des vins</h1>
-					<a class="button" href="">Add new</a>
+					<a class="button" href="edit.php">Add new</a>
 				</header>
 
 				<div>
@@ -77,7 +77,19 @@ $results = $stmt->fetchAll();
 									<td><?php echo $result->format; ?> <span>cl</span></td>
 									<td><?php echo $result->stock; ?> <span>cl</span></td>
 									<td><?php echo $result->grapes_name; ?></td>
-									<td><button>…</button></td>
+									<td>
+										<button data-action="user-action">…</button>
+										<menu class="" data-reaction="user-action">
+											<ul>
+												<li>
+													<a href="edit.php?wine_id=<?php echo $result->wine_id; ?>">Modifier</a>
+												</li>
+												<li>
+													<a href="delete.php?wine_id=<?php echo $result->wine_id; ?>">Supprimer</a>
+												</li>
+											</ul>
+										</menu>
+									</td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
@@ -104,13 +116,11 @@ $results = $stmt->fetchAll();
 				</div>
 			</section>
 
-			<div class="admin-menu">
-				<a href="#">Pochtron.be</a>
-				<a class="logout" href="logout.php">Déconnexion</a>
-			</div>
+			<?php include_once 'views/components/sidebar.php'; ?>
 		</main>
 	</div>
 
+	<script src="assets/js/app.js"></script>
 </body>
 </html>
 <?php

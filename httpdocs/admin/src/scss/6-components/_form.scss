@@ -23,7 +23,8 @@ input {
 	border: none;
 	border-radius: .4rem;
 
-	.login {
+	.login & {
+		color: var(--theme-color-white);
 		background-color: var(--theme-color-black);
 	}
 }

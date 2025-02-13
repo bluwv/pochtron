@@ -59,8 +59,11 @@ $users = $stmt->fetchAll();
 					</table>
 				</div>
 			</section>
+
+			<?php include_once 'views/components/sidebar.php'; ?>
 		</main>
 	</div>
 
+	<script src="assets/js/app.js"></script>
 </body>
 </html>

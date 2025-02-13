@@ -10,23 +10,20 @@ session_start();
 
 require_once '../../app/database.php';
 
-if ( ! empty( $_GET['wine_id'] )) {
+if ( ! empty( $_GET['wine_id'] ) ) {
+	$sql = "SELECT wines.id as wine_id, wines.name, grapes.color, producers.domain, producers.region, wines.year, wines.price, wines.format, wines.stock, grapes.name as grapes_name
+		FROM wines
+		LEFT JOIN producers ON wines.id_producer = producers.id
+		LEFT JOIN grapes ON wines.id_grapes = grapes.id
+		WHERE wines.id = " . $_GET['wine_id'];
 
-	// $sql = "SELECT id
-	// 	FROM wines
-	// 	WHERE id = " . $_GET['wine_id'];
+	$stmt = $db->prepare($sql);
+	$stmt->execute();
+	$result = $stmt->fetch();
+}
 
-	// $stmt = $db->prepare($sql);
-	// $stmt->execute();
-	// $has_wine = $stmt->fetch();
-
-	// var_dump($has_wine);
-	// die();
-
-	// if ( $has_wine ) {
-		// header('Location:');
-	// }
-
+// UPDATE si on submit un "wine" existant
+if ( ! empty( $_GET['wine_id'] ) && ! empty( $_GET['wine_id'] ) ) {
 	if ( ! empty( $_POST ) ) {
 		$sql = "UPDATE wines
 			SET name = :name
@@ -39,17 +36,38 @@ if ( ! empty( $_GET['wine_id'] )) {
 
 		$stmt->execute();
 	}
+}
 
-	$sql = "SELECT wines.id as wine_id, wines.name, grapes.color, producers.domain, producers.region, wines.year, wines.price, wines.format, wines.stock, grapes.name as grapes_name
-		FROM wines
-		JOIN producers ON wines.id_producer = producers.id
-		JOIN grapes ON wines.id_grapes = grapes.id
-		WHERE wines.id = " . $_GET['wine_id'];
+// INSERT INTO si on submit un "wine" vide
+if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
+	$sql = "INSERT INTO wines (name, year, price, format, stock)
+		VALUES (:name, :year, :price, :format, :stock)";
 
 	$stmt = $db->prepare($sql);
+
+	$stmt->bindValue(':name', $_POST['name']);
+	// $stmt->bindValue(':title', $_POST['title']);
+	$stmt->bindValue(':year', $_POST['year']);
+	$stmt->bindValue(':price', $_POST['price']);
+	$stmt->bindValue(':format', $_POST['format']);
+	$stmt->bindValue(':stock', $_POST['stock']);
+	// $stmt->bindValue(':stars', $_POST['wine_id']);
+	// $stmt->bindValue(':notes', $_POST['wine_id']);
+
 	$stmt->execute();
-	$result = $stmt->fetch();
+	$new_id = $db->lastInsertId();
+
+	// header(`Location: edit.php?wine_id=$new_id`);
 }
+
+// TODO: DELETE
+// $sql = "DELETE
+// 	FROM wines
+// 	WHERE id = :wine_id";
+
+// $stmt = $db->prepare($sql);
+// $stmt->execute([':wine_id' => $_GET['wine_id']]);
+// $results = $stmt->fetch();
 
 ?>
 
@@ -78,7 +96,7 @@ if ( ! empty( $_GET['wine_id'] )) {
 							<input id="name" type="text" name="name" placeholder="name" value="<?php echo (! empty($result)) ? $result->name : ""; ?>" required>
 						</div>
 
-						<div class="form-row">
+						<!-- <div class="form-row">
 							<label for="color">Couleur</label>
 							<input id="color" type="text" name="color" placeholder="color" value="<?php echo (! empty($result)) ?$result->color : ""; ?>" required>
 						</div>
@@ -91,7 +109,7 @@ if ( ! empty( $_GET['wine_id'] )) {
 						<div class="form-row">
 							<label for="region">Région</label>
 							<input id="region" type="text" name="region" placeholder="region" value="<?php echo (! empty($result)) ?$result->region : ""; ?>" required>
-						</div>
+						</div> -->
 
 						<div class="form-row">
 							<label for="year">Millésime</label>
@@ -113,22 +131,26 @@ if ( ! empty( $_GET['wine_id'] )) {
 							<input id="stock" type="text" name="stock" placeholder="stock" value="<?php echo (! empty($result)) ?$result->stock : ""; ?>" required>
 						</div>
 
-						<div class="form-row">
+						<!-- <div class="form-row">
 							<label for="grapes_name">Raisin(s)</label>
 							<input id="grapes_name" type="text" name="grapes_name" placeholder="grapes_name" value="<?php echo (! empty($result)) ? $result->grapes_name : ""; ?>" required>
-						</div>
+						</div> -->
 
 						<button>Submit</button>
 					</form>
+
+					<?php if ( ! empty( $_GET['wine_id'] ) ) : ?>
+					<form action="delete.php?wine_id=<?php echo $result->wine_id; ?>" method="GET" novalidate>
+						<button>Delete</button>
+					</form>
+					<?php endif; ?>
 				</div>
 			</section>
 
-			<div class="admin-menu">
-				<a href="#">Pochtron.be</a>
-				<a class="logout" href="#">Déconnexion</a>
-			</div>
+			<?php include_once 'views/components/sidebar.php'; ?>
 		</main>
 	</div>
 
+	<script src="assets/js/app.js"></script>
 </body>
 </html>
