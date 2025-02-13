@@ -1,3 +1,17 @@
+<?php
+
+require_once '../app/database.php';
+
+$sql = "SELECT wines.id as wine_id, wines.name, wines.thumbnail, producers.id as producer_id, producers.domain
+		FROM wines
+		LEFT JOIN producers ON wines.id = producers.id";
+
+$stmt = $db->prepare($sql);
+$stmt->execute();
+$wines = $stmt->fetchAll();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,18 +76,18 @@
 			</aside>
 
 			<div class="catalogue-view">
-				<?php for ($i=0; $i < 6; $i++) : ?>
+				<?php foreach ($wines as $wine) : ?>
 					<article class="card-product card">
-						<a href="single.php">
-							<img src="assets/images/bergerie_2020_75cl_rg_pic_saint_loup-999999999x1140.png" alt="">
+						<a href="single.php?wine_id=<?php echo $wine->wine_id; ?>">
+							<img src="assets/images/<?php echo $wine->thumbnail; ?>" alt="">
 
 							<div>
-								<h3 class="title">Foravia Langhe Nebbiolo</h3>
-								<p>Domaine de l’Hortus</p>
+								<h3 class="title"><?php echo $wine->name; ?></h3>
+								<p><?php echo $wine->domain; ?></p>
 							</div>
 						</a>
 					</article>
-				<?php endfor; ?>
+				<?php endforeach; ?>
 			</div>
 
 			<section class="catalogue-about">

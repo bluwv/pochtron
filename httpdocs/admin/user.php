@@ -25,6 +25,7 @@ if ( ! empty( $_GET['user_id'] )) {
 
 	// if ( $has_wine ) {
 		// header('Location:');
+		// exit();
 	// }
 
 	if ( ! empty( $_POST ) ) {

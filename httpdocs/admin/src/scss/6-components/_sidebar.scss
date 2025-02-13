@@ -1,0 +1,75 @@
+
+.admin-menu {
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	top: 0;
+	left: 0;
+	padding: 4.8rem 2.4rem 3.2rem;
+	width: 100%;
+	max-width: 32rem;
+	height: 100%;
+	color: var(--theme-color-white);
+
+	a {
+		text-decoration: none;
+	}
+
+	.logout {
+		color: var(--theme-color-red);
+		text-decoration: underline;
+	}
+
+	& > div:last-of-type {
+		display: flex;
+		gap: 1.2rem;
+		align-items: center;
+		position: relative;
+		margin-top: auto;
+		margin-bottom: 0;
+
+		img {
+			display: block;
+			width: 2.4rem;
+			height: 2.4rem;
+			background: var(--theme-color-primary);
+			border-radius: 50%;
+		}
+
+		button {
+			margin-left: auto;
+			margin-right: 0;
+		}
+
+		menu {
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 1.6rem;
+			transform: translateY(-100%);
+			background: rgba(#848C95, .12);
+			border-radius: .4rem;
+			transition: all .2s ease-out;
+
+			li:not(:first-child) {
+				margin-top: 1.2rem;
+			}
+
+			li:not(:last-child) {
+				margin-bottom: 1.2rem;
+			}
+
+			&:not(.active) {
+				transform: translateY(-80%);
+				opacity: 0;
+				pointer-events: none;
+			}
+		}
+	}
+}
+
+.button-sidebar-expand {
+	position: absolute;
+	top: 1.2rem;
+	left: 1.2rem;
+}

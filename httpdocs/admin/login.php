@@ -4,6 +4,7 @@ session_start();
 
 if ( ! empty( $_SESSION ) && $_SESSION['token'] ) {
 	header('Location: list.php');
+	exit();
 }
 
 require_once '../../app/database.php';
@@ -27,6 +28,7 @@ if ( ! empty( $_POST ) ) {
 		$_SESSION['token'] = time() + 60 * 60 * 24 * 2;
 
 		header('Location: list.php');
+		exit();
 	}
 }
 

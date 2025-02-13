@@ -1,11 +1,3 @@
-<?php
-
-session_start();
-
-header('Location : login.php');
-exit();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +7,13 @@ exit();
 </head>
 <body>
 
-	<script src="assets/js/app.js"></script>
+<?php include_once 'views/layouts/header.php'; ?>
+
+	<main class="site-main">
+		contact
+	</main>
+
+	<?php include_once 'views/layouts/footer.php'; ?>
+
 </body>
 </html>

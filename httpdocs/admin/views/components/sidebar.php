@@ -22,17 +22,17 @@ $sql = "SELECT *
 
 	<nav class="menu-primary menu">
 		<ul>
-			<li class="active">
+			<li>
 				<a href="#">Tableau de bord</a>
 			</li>
-			<li>
+			<li class="active">
 				<a href="list.php">Vins</a>
 			</li>
 			<li>
-				<a href="#">Domaines</a>
+				<a href="domain.php">Domaines</a>
 			</li>
 			<li>
-				<a href="#">Cépages</a>
+				<a href="grapes.php">Cépages</a>
 			</li>
 		</ul>
 	</nav>
@@ -54,7 +54,6 @@ $sql = "SELECT *
 		</ul>
 	</nav>
 
-
 	<div>
 		<img src="" alt="">
 		<p><?php echo $user->name; ?></p>
@@ -70,4 +69,6 @@ $sql = "SELECT *
 			</ul>
 		</menu>
 	</div>
+
+	<button class="button-sidebar-expand" data-id="collapse-menu">…</button>
 </div>

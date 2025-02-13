@@ -5,23 +5,23 @@
 		<nav class="menu-primary menu">
 			<ul>
 				<li>
-					<a href="">Boutique</a>
+					<a href="catalogue.php">Boutique</a>
 				</li>
 				<li>
-					<a href="">Blog</a>
+					<a href="blog.php">Blog</a>
 				</li>
 				<li>
-					<a href="">Contact</a>
+					<a href="contact.php">Contact</a>
 				</li>
 			</ul>
 		</nav>
 
 		<ol>
 			<li>
-				<a href="">Compte</a>
+				<a href="#">Compte</a>
 			</li>
 			<li>
-				<a href="">Panier</a>
+				<a href="#">Panier</a>
 			</li>
 		</ol>
 	</div>

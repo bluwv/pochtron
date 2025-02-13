@@ -10,7 +10,7 @@
 <?php include_once 'views/layouts/header.php'; ?>
 
 	<main class="site-main">
-		index
+		contact
 	</main>
 
 	<?php include_once 'views/layouts/footer.php'; ?>

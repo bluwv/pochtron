@@ -8,6 +8,9 @@ session_start();
  * si vide blanco aussi
  */
 
+// TODO: Bien check que je ne peux delete que le product que je visualise
+// TODO: Problème de double submission to bypass => soit ajax soit / unset form
+
 require_once '../../app/database.php';
 
 if ( ! empty( $_GET['wine_id'] ) ) {
@@ -22,20 +25,33 @@ if ( ! empty( $_GET['wine_id'] ) ) {
 	$result = $stmt->fetch();
 }
 
+if ( isset( $_POST['delete'] ) ) {
+	$sql = "DELETE FROM wines
+			WHERE wines.id = :wine_id";
+
+	$stmt = $db->prepare($sql);
+	$stmt->execute([':wine_id' => $_POST['delete']]);
+
+	header('Location: list.php');
+	exit();
+}
+
 // UPDATE si on submit un "wine" existant
-if ( ! empty( $_GET['wine_id'] ) && ! empty( $_GET['wine_id'] ) ) {
-	if ( ! empty( $_POST ) ) {
-		$sql = "UPDATE wines
-			SET name = :name
-			WHERE id = :wine_id";
+if ( ! empty( $_GET['wine_id'] ) && ! empty( $_POST ) ) {
+	$sql = "UPDATE wines
+		SET name = :name, year = :year, price = :price, format = :format, stock = :stock
+		WHERE id = :wine_id";
 
-		$stmt = $db->prepare($sql);
+	$stmt = $db->prepare($sql);
 
-		$stmt->bindValue(':name', $_POST['name']);
-		$stmt->bindValue(':wine_id', $_GET['wine_id']);
+	$stmt->bindValue(':name', $_POST['name']);
+	$stmt->bindValue(':year', $_POST['year']);
+	$stmt->bindValue(':price', $_POST['price']);
+	$stmt->bindValue(':format', $_POST['format']);
+	$stmt->bindValue(':stock', $_POST['stock']);
+	$stmt->bindValue(':wine_id', $_GET['wine_id']);
 
-		$stmt->execute();
-	}
+	$stmt->execute();
 }
 
 // INSERT INTO si on submit un "wine" vide
@@ -56,18 +72,9 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 
 	$stmt->execute();
 	$new_id = $db->lastInsertId();
-
-	// header(`Location: edit.php?wine_id=$new_id`);
+	header("Location: edit.php?wine_id=" . $new_id);
+	exit();
 }
-
-// TODO: DELETE
-// $sql = "DELETE
-// 	FROM wines
-// 	WHERE id = :wine_id";
-
-// $stmt = $db->prepare($sql);
-// $stmt->execute([':wine_id' => $_GET['wine_id']]);
-// $results = $stmt->fetch();
 
 ?>
 
@@ -90,7 +97,7 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 				</header>
 
 				<div>
-					<form action="#" method="POST" novalidate>
+					<form action="" method="POST" novalidate>
 						<div class="form-row">
 							<label for="name">Nom</label>
 							<input id="name" type="text" name="name" placeholder="name" value="<?php echo (! empty($result)) ? $result->name : ""; ?>" required>
@@ -140,15 +147,26 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 					</form>
 
 					<?php if ( ! empty( $_GET['wine_id'] ) ) : ?>
-					<form action="delete.php?wine_id=<?php echo $result->wine_id; ?>" method="GET" novalidate>
-						<button>Delete</button>
-					</form>
+						<button class="button-delete button" type="button" data-show="delete">Delete ?</button>
 					<?php endif; ?>
 				</div>
 			</section>
 
 			<?php include_once 'views/components/sidebar.php'; ?>
 		</main>
+
+		<aside class="modals">
+			<section class="modal" data-modal="delete">
+				<p>Placeholder vraiment supprimer</p>
+
+				<?php if ( ! empty( $_GET['wine_id'] ) ) : ?>
+					<form action="edit.php?wine_id=<?php echo $_GET['wine_id']; ?>" method="POST" novalidate>
+						<button class="button-cancel button" type="button" data-cancel="modal">Annuler</button>
+						<button class="button-delete button" type="submit" name=delete value="<?php echo $_GET['wine_id']; ?>">Delete ?</button>
+					</form>
+				<?php endif; ?>
+			</section>
+		</aside>
 	</div>
 
 	<script src="assets/js/app.js"></script>

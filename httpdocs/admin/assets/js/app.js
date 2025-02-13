@@ -10,4 +10,31 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		});
 	});
 
+	document.querySelector('[data-id="collapse-menu"]').addEventListener('click', (button) => {
+		button.preventDefault();
+
+		document.body.classList.toggle('menu-collapse');
+	});
+
+	// MODAL
+
+	document.querySelectorAll('[data-show="delete"]').forEach(modal => {
+		modal.addEventListener('click', (button) => {
+			button.preventDefault();
+
+			document.querySelector('[data-modal="delete"]').parentElement.classList.add('active');
+
+		});
+	});
+
+	document.querySelectorAll('[data-cancel="modal"]').forEach(modal => {
+		modal.addEventListener('click', (button) => {
+			button.preventDefault();
+
+			document.querySelector('[data-modal="delete"]').parentElement.classList.remove('active');
+
+		});
+	});
+
+
 });

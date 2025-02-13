@@ -4,6 +4,7 @@ session_start();
 if ( $_SESSION['token'] < time() ) {
 	session_destroy();
 	header('Location: login.php');
+	exit();
 }
 
 require_once '../../app/database.php';
@@ -66,18 +67,18 @@ $results = $stmt->fetchAll();
 						<tbody>
 							<?php foreach ( $results as $result ) : ?>
 								<tr>
-									<td>
+									<td data-content="Nom">
 										<a href="edit.php?wine_id=<?php echo $result->wine_id; ?>"><?php echo $result->name; ?></a>
 									</td>
-									<td><?php echo $result->color; ?></td>
-									<td><?php echo $result->domain; ?></td>
-									<td><?php echo $result->region; ?></td>
-									<td><?php echo $result->year; ?></td>
-									<td><?php echo $result->price; ?> <span>€</span></td>
-									<td><?php echo $result->format; ?> <span>cl</span></td>
-									<td><?php echo $result->stock; ?> <span>cl</span></td>
-									<td><?php echo $result->grapes_name; ?></td>
-									<td>
+									<td data-content="Type"><?php echo $result->color; ?></td>
+									<td data-content="Domaine"><?php echo $result->domain; ?></td>
+									<td data-content="Région"><?php echo $result->region; ?></td>
+									<td data-content="Millésime"><?php echo $result->year; ?></td>
+									<td data-content="Prix"><?php echo $result->price; ?> <span>€</span></td>
+									<td data-content="Format"><?php echo $result->format; ?> <span>cl</span></td>
+									<td data-content="Stock"><?php echo $result->stock; ?> <span>cl</span></td>
+									<td data-content="Cépages"><?php echo $result->grapes_name; ?></td>
+									<td data-content="Actions">
 										<button data-action="user-action">…</button>
 										<menu class="" data-reaction="user-action">
 											<ul>

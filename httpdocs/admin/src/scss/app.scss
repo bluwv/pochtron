@@ -14,7 +14,10 @@
 @use '6-components/form';
 
 @use '6-components/edit';
+@use '6-components/list';
 @use '6-components/login';
+@use '6-components/modal';
+@use '6-components/sidebar';
 
 /// 7-UTILITIES
 @use '7-utilities/screenreader';

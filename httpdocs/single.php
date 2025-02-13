@@ -1,3 +1,29 @@
+<?php
+
+require_once '../app/database.php';
+
+$sql = "SELECT wines.id as wine_id, wines.name, wines.price, wines.description, wines.year, wines.format, wines.thumbnail, producers.id as producer_id, producers.domain
+		FROM wines
+		LEFT JOIN producers ON wines.id = producers.id
+		WHERE wines.id = :wine_id";
+
+$stmt = $db->prepare($sql);
+$stmt->execute([':wine_id' => $_GET['wine_id']]);
+$wine = $stmt->fetch();
+
+$sql = "SELECT wines.id as wine_id, wines.name, wines.price, wines.description, wines.year, wines.format, wines.thumbnail, producers.id as producer_id, producers.domain
+		FROM wines
+		LEFT JOIN producers ON wines.id = producers.id
+		WHERE wines.id <> :wine_id
+		ORDER BY RAND()
+		LIMIT 4";
+
+$stmt = $db->prepare($sql);
+$stmt->execute([':wine_id' => $_GET['wine_id']]);
+$related_wines = $stmt->fetchAll();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,37 +84,37 @@
 
 			<div class="single-product">
 				<div>
-					<img src="assets/images/bergerie_2020_75cl_rg_pic_saint_loup-999999999x1140.png" alt="">
+					<img src="assets/images/<?php echo $wine->thumbnail; ?>" alt="">
 				</div>
 
 				<div>
-					<h1 class="title">Foravia Langhe Nebbiolo</h1>
-					<p class="domain">Domaine de l’Hortus</p>
-					<p class="price">28,00 € <span>L’unité</span></p>
-					<p>Un Nebbiolo travaillé dans les codes de l'ère moderne : frais, élégant et aérien.</p>
+					<h1 class="title"><?php echo $wine->name; ?></h1>
+					<p class="domain"><?php echo $wine->domain ?></p>
+					<p class="price"><strong><?php echo $wine->price ?></strong> € <span>L’unité</span></p>
+					<p><?php echo $wine->description; ?></p>
 
 					<form action="" method="POST" novalidate>
 						<div class="form-row">
 							<label for="qty">Quantité</label>
-							<input id="qty" type="number" name="qty" placeholder="">
+							<input id="qty" type="number" name="qty" value="1" min="1" max="6">
 						</div>
 
 						<div class="form-row">
 							<label for="year">Millésime</label>
 							<select id="year" name="year">
-								<option value="2022">2022</option>
+								<option value="<?php echo $wine->year; ?>"><?php echo $wine->year; ?></option>
 							</select>
 						</div>
 
 						<div class="form-row">
 							<label for="format">Format</label>
 							<select id="format" name="format">
-								<option value="75">75 cl</option>
+								<option value="<?php echo $wine->format; ?>"><?php echo $wine->format; ?> cl</option>
 							</select>
 						</div>
 
 						<div class="form-row form-row--button">
-							<button type="submit">Ajouter au panier — 28,00€</button>
+							<button type="submit">Ajouter au panier — <span><?php echo $wine->price; ?></span>€</button>
 						</div>
 					</form>
 				</div>
@@ -110,23 +136,25 @@
 			<section class="single-related-products">
 				<h3 class="title">Nos autres vins</h3>
 
-				<?php for ($i=0; $i < 4; $i++) : ?>
+				<?php foreach ($related_wines as $wine) : ?>
 					<article class="card-product card">
-						<a href="single.php">
-							<img src="assets/images/bergerie_2020_75cl_rg_pic_saint_loup-999999999x1140.png" alt="">
+						<a href="single.php?wine_id=<?php echo $wine->wine_id; ?>">
+							<img src="assets/images/<?php echo $wine->thumbnail; ?>" alt="">
 
 							<div>
-								<h3 class="title">Foravia Langhe Nebbiolo</h3>
-								<p>Domaine de l’Hortus</p>
+								<h3 class="title"><?php echo $wine->name; ?></h3>
+								<p><?php echo $wine->domain; ?></p>
 							</div>
 						</a>
 					</article>
-				<?php endfor; ?>
+				<?php endforeach; ?>
 			</section>
 		</main>
 
 		<?php include_once 'views/layouts/footer.php'; ?>
 	</div>
+
+<script src="assets/js/app.js"></script>
 
 </body>
 </html>
