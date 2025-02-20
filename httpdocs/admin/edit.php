@@ -2,6 +2,12 @@
 
 session_start();
 
+if ( $_SESSION['timeout'] < time() ) {
+	session_destroy();
+	header('Location: login.php');
+	exit();
+}
+
 /** Check que l'id existe
  * -> si existe afficher == ok
  * _> si existe pas affiche blanco
@@ -11,8 +17,9 @@ session_start();
 // TODO: Bien check que je ne peux delete que le product que je visualise
 // TODO: Problème de double submission to bypass => soit ajax soit / unset form
 
-require_once '../../app/database.php';
+require_once 'app/database.php';
 
+// SELECT
 if ( ! empty( $_GET['wine_id'] ) ) {
 	$sql = "SELECT wines.id as wine_id, wines.name, grapes.color, producers.domain, producers.region, wines.year, wines.price, wines.format, wines.stock, grapes.name as grapes_name
 		FROM wines
@@ -25,6 +32,7 @@ if ( ! empty( $_GET['wine_id'] ) ) {
 	$result = $stmt->fetch();
 }
 
+// DELETE
 if ( isset( $_POST['delete'] ) ) {
 	$sql = "DELETE FROM wines
 			WHERE wines.id = :wine_id";
@@ -38,17 +46,23 @@ if ( isset( $_POST['delete'] ) ) {
 
 // UPDATE si on submit un "wine" existant
 if ( ! empty( $_GET['wine_id'] ) && ! empty( $_POST ) ) {
+	$name = htmlentities(trim($_POST['name']), ENT_QUOTES, 'UTF-8');
+	$year = htmlentities(trim($_POST['year']), ENT_QUOTES, 'UTF-8');
+	$price = htmlentities(trim($_POST['price']), ENT_QUOTES, 'UTF-8');
+	$format = htmlentities(trim($_POST['format']), ENT_QUOTES, 'UTF-8');
+	$stock = htmlentities(trim($_POST['stock']), ENT_QUOTES, 'UTF-8');
+
 	$sql = "UPDATE wines
 		SET name = :name, year = :year, price = :price, format = :format, stock = :stock
 		WHERE id = :wine_id";
 
 	$stmt = $db->prepare($sql);
 
-	$stmt->bindValue(':name', $_POST['name']);
-	$stmt->bindValue(':year', $_POST['year']);
-	$stmt->bindValue(':price', $_POST['price']);
-	$stmt->bindValue(':format', $_POST['format']);
-	$stmt->bindValue(':stock', $_POST['stock']);
+	$stmt->bindValue(':name', $name);
+	$stmt->bindValue(':year', $year);
+	$stmt->bindValue(':price', $price);
+	$stmt->bindValue(':format', $format);
+	$stmt->bindValue(':stock', $stock);
 	$stmt->bindValue(':wine_id', $_GET['wine_id']);
 
 	$stmt->execute();
@@ -56,23 +70,29 @@ if ( ! empty( $_GET['wine_id'] ) && ! empty( $_POST ) ) {
 
 // INSERT INTO si on submit un "wine" vide
 if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
+	$name = htmlentities(trim($_POST['name']), ENT_QUOTES, 'UTF-8');
+	$year = htmlentities(trim($_POST['year']), ENT_QUOTES, 'UTF-8');
+	$price = htmlentities(trim($_POST['price']), ENT_QUOTES, 'UTF-8');
+	$format = htmlentities(trim($_POST['format']), ENT_QUOTES, 'UTF-8');
+	$stock = htmlentities(trim($_POST['stock']), ENT_QUOTES, 'UTF-8');
+
 	$sql = "INSERT INTO wines (name, year, price, format, stock)
 		VALUES (:name, :year, :price, :format, :stock)";
 
 	$stmt = $db->prepare($sql);
 
-	$stmt->bindValue(':name', $_POST['name']);
+	$stmt->bindValue(':name', $name);
 	// $stmt->bindValue(':title', $_POST['title']);
-	$stmt->bindValue(':year', $_POST['year']);
-	$stmt->bindValue(':price', $_POST['price']);
-	$stmt->bindValue(':format', $_POST['format']);
-	$stmt->bindValue(':stock', $_POST['stock']);
+	$stmt->bindValue(':year', $year);
+	$stmt->bindValue(':price', $price);
+	$stmt->bindValue(':format', $format);
+	$stmt->bindValue(':stock', $stock);
 	// $stmt->bindValue(':stars', $_POST['wine_id']);
 	// $stmt->bindValue(':notes', $_POST['wine_id']);
 
 	$stmt->execute();
 	$new_id = $db->lastInsertId();
-	header("Location: edit.php?wine_id=" . $new_id);
+	header("Location: edit.php?post_type=wine&wine_id=" . $new_id);
 	exit();
 }
 
@@ -93,7 +113,12 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 		<main class="site-main">
 			<section class="edit-listing">
 				<header>
-					<h1>Ajouter un vin</h1>
+					<?php if ( isset( $_GET['wine_id'] ) ) : ?>
+						<h1>Modifier un vin</h1>
+						<a class="button" href="edit.php?post_type=wine">Add new</a>
+					<?php else : ?>
+						<h1>Ajouter un vin</h1>
+					<?php endif; ?>
 				</header>
 
 				<div>
@@ -134,7 +159,7 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 						</div>
 
 						<div class="form-row">
-							<label for="stock"></label>
+							<label for="stock">Stock</label>
 							<input id="stock" type="text" name="stock" placeholder="stock" value="<?php echo (! empty($result)) ?$result->stock : ""; ?>" required>
 						</div>
 
@@ -143,12 +168,14 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 							<input id="grapes_name" type="text" name="grapes_name" placeholder="grapes_name" value="<?php echo (! empty($result)) ? $result->grapes_name : ""; ?>" required>
 						</div> -->
 
-						<button>Submit</button>
-					</form>
+						<div class="form-row form-row--submit">
+							<button class="button-submit button" type="submit">Submit</button>
 
-					<?php if ( ! empty( $_GET['wine_id'] ) ) : ?>
-						<button class="button-delete button" type="button" data-show="delete">Delete ?</button>
-					<?php endif; ?>
+							<?php if ( ! empty( $_GET['wine_id'] ) ) : ?>
+								<button class="button-delete button" type="button" data-show="delete">Delete ?</button>
+							<?php endif; ?>
+						</div>
+					</form>
 				</div>
 			</section>
 
@@ -160,7 +187,7 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 				<p>Placeholder vraiment supprimer</p>
 
 				<?php if ( ! empty( $_GET['wine_id'] ) ) : ?>
-					<form action="edit.php?wine_id=<?php echo $_GET['wine_id']; ?>" method="POST" novalidate>
+					<form action="edit.php?post_type=wine&wine_id=<?php echo $_GET['wine_id']; ?>" method="POST" novalidate>
 						<button class="button-cancel button" type="button" data-cancel="modal">Annuler</button>
 						<button class="button-delete button" type="submit" name=delete value="<?php echo $_GET['wine_id']; ?>">Delete ?</button>
 					</form>

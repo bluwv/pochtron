@@ -47,9 +47,43 @@
 		}
 	}
 
+	form {
+		transition: all .2s ease-in-out;
+	}
+
+	.menu-primary,
+	.menu-secondary {
+		li {
+			transition: all .2s ease-in-out;
+
+			@for $i from 1 through 4 {
+				&:nth-child(#{$i}) {
+					transition-delay: #{.08 + (.08 * $i)}s;
+				}
+			}
+		}
+	}
+
 	&.menu-collapse {
 		.site-main > section {
 			width: calc(100vw - 6rem - 2.4rem);
+		}
+
+		.admin-menu {
+			form {
+				opacity: 0;
+				pointer-events: none;
+			}
+
+			.menu-primary,
+			.menu-secondary {
+				li {
+					opacity: 0;
+					pointer-events: none;
+					transform: translate(-2rem);
+					transition-delay: 0s;
+				}
+			}
 		}
 	}
 }

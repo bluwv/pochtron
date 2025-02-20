@@ -10,6 +10,8 @@ $sql = "SELECT *
 
 	$stmt->execute();
 	$user = $stmt->fetch();
+
+	// var_dump($user);
 ?>
 
 <div class="admin-menu">
@@ -22,25 +24,25 @@ $sql = "SELECT *
 
 	<nav class="menu-primary menu">
 		<ul>
-			<li>
-				<a href="#">Tableau de bord</a>
+			<li class="<?php echo ( ! isset( $_GET['post_type'] ) ) ? 'active' : ''; ?>">
+				<a href="">Tableau de bord</a>
 			</li>
-			<li class="active">
-				<a href="list.php">Vins</a>
+			<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'wine' ) ? 'active' : ''; ?>">
+				<a href="list.php?post_type=wine">Vins</a>
 			</li>
-			<li>
-				<a href="domain.php">Domaines</a>
+			<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'producer' ) ? 'active' : ''; ?>">
+				<a href="domain.php?post_type=producer">Domaines</a>
 			</li>
-			<li>
-				<a href="grapes.php">Cépages</a>
+			<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'grape' ) ? 'active' : ''; ?>">
+				<a href="list.php?post_type=grape">Cépages</a>
 			</li>
 		</ul>
 	</nav>
 
 	<nav class="menu-secondary menu">
 		<ul>
-			<li>
-				<a href="users.php">Utilisateurs</a>
+			<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'user' ) ? 'active' : ''; ?>">
+				<a href="users.php?post_type=user">Utilisateurs</a>
 			</li>
 			<li>
 				<a href="#">Notifications</a>
@@ -54,14 +56,18 @@ $sql = "SELECT *
 		</ul>
 	</nav>
 
-	<div>
-		<img src="" alt="">
-		<p><?php echo $user->name; ?></p>
-		<button data-action="user-action">…</button>
+	<div class="sidebar-current-user">
+		<a href="user.php?post_type=user&user_id=<?php echo $user->id; ?>">
+			<img src="assets/icons/profile.svg" alt="">
+			<p><?php echo $user->name; ?></p>
+		</a>
+
+		<button class="button-sidebar button" data-action="user-action">…</button>
+
 		<menu class="" data-reaction="user-action">
 			<ul>
 				<li>
-					<a href="user.php?id=<?php echo $user->id; ?>">Modifier le profil</a>
+					<a href="user.php?post_type=user&user_id=<?php echo $user->id; ?>">Modifier le profil</a>
 				</li>
 				<li>
 					<a class="logout" href="logout.php">Déconnexion</a>
@@ -70,5 +76,5 @@ $sql = "SELECT *
 		</menu>
 	</div>
 
-	<button class="button-sidebar-expand" data-id="collapse-menu">…</button>
+	<button class="button-sidebar-expand button" data-id="collapse-menu"></button>
 </div>

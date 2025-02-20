@@ -138,7 +138,7 @@ $related_wines = $stmt->fetchAll();
 
 				<?php foreach ($related_wines as $wine) : ?>
 					<article class="card-product card">
-						<a href="single.php?wine_id=<?php echo $wine->wine_id; ?>">
+						<a href="single.php?post_type=wine&wine_id=<?php echo $wine->wine_id; ?>">
 							<img src="assets/images/<?php echo $wine->thumbnail; ?>" alt="">
 
 							<div>

@@ -22,19 +22,11 @@
 
 	& > div:last-of-type {
 		display: flex;
-		gap: 1.2rem;
+		gap: 1.6rem;
 		align-items: center;
 		position: relative;
 		margin-top: auto;
 		margin-bottom: 0;
-
-		img {
-			display: block;
-			width: 2.4rem;
-			height: 2.4rem;
-			background: var(--theme-color-primary);
-			border-radius: 50%;
-		}
 
 		button {
 			margin-left: auto;
@@ -45,8 +37,10 @@
 			position: absolute;
 			top: 0;
 			right: 0;
-			padding: 1.6rem;
+			padding: 2rem 1.6rem;
 			transform: translateY(-100%);
+			font-size: 1.3rem;
+			text-align: right;
 			background: rgba(#848C95, .12);
 			border-radius: .4rem;
 			transition: all .2s ease-out;
@@ -68,8 +62,18 @@
 	}
 }
 
-.button-sidebar-expand {
-	position: absolute;
-	top: 1.2rem;
-	left: 1.2rem;
+.sidebar-current-user > a {
+	display: flex;
+	align-items: center;
+	gap: 1.6rem;
+
+	img {
+		display: block;
+		padding: .4rem;
+		width: 3.2rem;
+		height: 3.2rem;
+		background: var(--theme-color-white);
+		border-radius: 50%;
+		object-fit: contain;
+	}
 }

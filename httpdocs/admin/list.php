@@ -1,13 +1,14 @@
 <?php
 
 session_start();
-if ( $_SESSION['token'] < time() ) {
+
+if ( $_SESSION['timeout'] < time() ) {
 	session_destroy();
 	header('Location: login.php');
 	exit();
 }
 
-require_once '../../app/database.php';
+require_once 'app/database.php';
 
 $wines_limit = 20;
 $wines_offset = ($_GET['page'] ?? 0) * $wines_limit;
@@ -21,6 +22,20 @@ $sql = "SELECT wines.id as wine_id, wines.name, grapes.color, producers.domain, 
 $stmt = $db->prepare($sql);
 $stmt->execute();
 $results = $stmt->fetchAll();
+
+// DELETE
+
+if ( isset( $_POST['delete'] ) && isset( $_POST['wine_id'] ) ) {
+	$sql = "DELETE FROM wines
+			WHERE wines.id = :wine_id";
+
+	$stmt = $db->prepare($sql);
+	$stmt->execute([':wine_id' => $_POST['wine_id']]);
+
+	header('Location: list.php');
+	exit();
+}
+
 
 ?>
 
@@ -40,7 +55,7 @@ $results = $stmt->fetchAll();
 			<section class="edit-listing">
 				<header>
 					<h1>Listing des vins</h1>
-					<a class="button" href="edit.php">Add new</a>
+					<a class="button" href="edit.php?post_type=wine">Add new</a>
 				</header>
 
 				<div>
@@ -66,9 +81,9 @@ $results = $stmt->fetchAll();
 
 						<tbody>
 							<?php foreach ( $results as $result ) : ?>
-								<tr>
+								<tr data-wineID="<?php echo $result->wine_id; ?>">
 									<td data-content="Nom">
-										<a href="edit.php?wine_id=<?php echo $result->wine_id; ?>"><?php echo $result->name; ?></a>
+										<a href="edit.php?post_type=wine&wine_id=<?php echo $result->wine_id; ?>"><?php echo $result->name; ?></a>
 									</td>
 									<td data-content="Type"><?php echo $result->color; ?></td>
 									<td data-content="Domaine"><?php echo $result->domain; ?></td>
@@ -79,14 +94,14 @@ $results = $stmt->fetchAll();
 									<td data-content="Stock"><?php echo $result->stock; ?> <span>cl</span></td>
 									<td data-content="Cépages"><?php echo $result->grapes_name; ?></td>
 									<td data-content="Actions">
-										<button data-action="user-action">…</button>
-										<menu class="" data-reaction="user-action">
+										<?php // <button data-action="user-action">…</button> ?>
+										<menu class="">
 											<ul>
 												<li>
-													<a href="edit.php?wine_id=<?php echo $result->wine_id; ?>">Modifier</a>
+													<a class="button-edit button" href="edit.php?post_type=wine&wine_id=<?php echo $result->wine_id; ?>">Modifier</a>
 												</li>
 												<li>
-													<a href="delete.php?wine_id=<?php echo $result->wine_id; ?>">Supprimer</a>
+													<button class="button-delete button" data-show="delete">Supprimer</button>
 												</li>
 											</ul>
 										</menu>
@@ -120,6 +135,19 @@ $results = $stmt->fetchAll();
 			<?php include_once 'views/components/sidebar.php'; ?>
 		</main>
 	</div>
+
+	<aside class="modals">
+		<section class="modal" data-modal="delete">
+			<p>Placeholder vraiment supprimer</p>
+
+			<form action="list.php" method="POST" novalidate>
+				<input type="hidden" name="wine_id" value="">
+
+				<button class="button-cancel button" type="button" data-cancel="modal">Annuler</button>
+				<button class="button-delete button" type="submit" name="delete">Delete ?</button>
+			</form>
+		</section>
+	</aside>
 
 	<script src="assets/js/app.js"></script>
 </body>

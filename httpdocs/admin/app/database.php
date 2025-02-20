@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config/database.settings.php';
+require_once '../../config/database.settings.php';
 
 try {
 	$db = new PDO('mysql:host=localhost;dbname='.$dbname, $dbuser, $dbpass);

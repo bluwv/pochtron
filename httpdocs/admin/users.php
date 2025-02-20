@@ -2,7 +2,13 @@
 
 session_start();
 
-require_once '../../app/database.php';
+if ( $_SESSION['timeout'] < time() ) {
+	session_destroy();
+	header('Location: login.php');
+	exit();
+}
+
+require_once 'app/database.php';
 
 $sql = "SELECT *
 		FROM users";
@@ -29,7 +35,7 @@ $users = $stmt->fetchAll();
 			<section class="edit-listing">
 				<header>
 					<h1>Listing des users</h1>
-					<a class="button" href="">Add new</a>
+					<a class="button" href="user.php?post_type=user">Add new</a>
 				</header>
 
 				<div>
@@ -38,7 +44,6 @@ $users = $stmt->fetchAll();
 							<tr>
 								<th>Email</th>
 								<th>Name</th>
-								<th>Token</th>
 								<th>Created</th>
 								<th>Actions</th>
 						</thead>
@@ -47,12 +52,11 @@ $users = $stmt->fetchAll();
 							<?php foreach ( $users as $user ) : ?>
 								<tr>
 									<td>
-										<a href="user.php?user_id=<?php echo $user->id; ?>"><?php echo $user->email; ?></a>
+										<a href="user.php?post_type=user&user_id=<?php echo $user->id; ?>"><?php echo $user->email; ?></a>
 									</td>
 									<td><?php echo $user->name; ?></td>
-									<td><?php echo $user->token; ?></td>
 									<td><?php echo $user->created_at; ?></td>
-									<td><button>…</button></td>
+									<td><a class="button-edit button" href="user.php?post_type=user&user_id=<?php echo $user->id; ?>">Modifier</a></td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>

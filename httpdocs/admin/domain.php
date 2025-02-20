@@ -1,13 +1,14 @@
 <?php
 
 session_start();
-if ( $_SESSION['token'] < time() ) {
+
+if ( $_SESSION['timeout'] < time() ) {
 	session_destroy();
 	header('Location: login.php');
 	exit();
 }
 
-require '../../app/database.php';
+require 'app/database.php';
 
 $sql = "SELECT *
 		FROM producers";
@@ -35,7 +36,7 @@ $producers = $stmt->fetchAll();
 			<section class="edit-listing">
 				<header>
 					<h1>Listing des vins</h1>
-					<a class="button" href="edit.php">Add new</a>
+					<a class="button" href="edit.php?post_type=wine">Add new</a>
 				</header>
 
 				<div>

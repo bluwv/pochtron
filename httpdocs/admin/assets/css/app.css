@@ -108,6 +108,87 @@ body {
   border-radius: 0.4rem;
 }
 
+.button-edit {
+  position: relative;
+  padding: 0;
+  width: 4rem;
+  height: 4rem;
+  text-indent: -9999px;
+}
+.button-edit::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.6rem;
+  height: 1.6rem;
+  background-image: url("../../assets/icons/edit.svg");
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: invert(1);
+}
+
+.button-delete {
+  position: relative;
+  padding: 0;
+  width: 4rem;
+  height: 4rem;
+  text-indent: -9999px;
+  background: #dc3545;
+}
+.button-delete::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.6rem;
+  height: 1.6rem;
+  background-image: url("../../assets/icons/delete.svg");
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: invert(1);
+}
+
+.button-sidebar-expand {
+  position: relative;
+  padding: 0;
+  width: 4rem;
+  height: 4rem;
+  text-indent: -9999px;
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  background: var(--theme-color-grey);
+}
+.button-sidebar-expand::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.6rem;
+  height: 1.6rem;
+  background-image: url("../../assets/icons/sidebar.svg");
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: invert(1);
+}
+
+.button-sidebar {
+  padding: 0;
+  width: 4rem;
+  height: 4rem;
+  background: var(--theme-color-grey);
+}
+
 form {
   margin-top: 4rem;
   margin-bottom: 2rem;
@@ -115,6 +196,9 @@ form {
 
 .form-row {
   margin: 1.2rem 0;
+}
+.form-row.form-row--submit, .form-row:last-of-type {
+  margin-top: 4rem;
 }
 
 label {
@@ -185,8 +269,42 @@ input {
     width: calc(100vw - 32rem - 2.4rem);
   }
 }
+.admin form {
+  transition: all 0.2s ease-in-out;
+}
+.admin .menu-primary li,
+.admin .menu-secondary li {
+  transition: all 0.2s ease-in-out;
+}
+.admin .menu-primary li:nth-child(1),
+.admin .menu-secondary li:nth-child(1) {
+  transition-delay: 0.16s;
+}
+.admin .menu-primary li:nth-child(2),
+.admin .menu-secondary li:nth-child(2) {
+  transition-delay: 0.24s;
+}
+.admin .menu-primary li:nth-child(3),
+.admin .menu-secondary li:nth-child(3) {
+  transition-delay: 0.32s;
+}
+.admin .menu-primary li:nth-child(4),
+.admin .menu-secondary li:nth-child(4) {
+  transition-delay: 0.4s;
+}
 .admin.menu-collapse .site-main > section {
   width: calc(100vw - 6rem - 2.4rem);
+}
+.admin.menu-collapse .admin-menu form {
+  opacity: 0;
+  pointer-events: none;
+}
+.admin.menu-collapse .admin-menu .menu-primary li,
+.admin.menu-collapse .admin-menu .menu-secondary li {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-2rem);
+  transition-delay: 0s;
 }
 
 .menu li a {
@@ -245,39 +363,25 @@ input {
 }
 
 table {
-  width: 100%;
+  margin: 0 -1.2rem;
+  width: calc(100% + 2.4rem);
 }
 table thead {
-  display: none;
-  border-bottom: 1px solid #848C95;
+  border-bottom: 1px solid var(--theme-color-white);
 }
-table tbody tr {
-  display: flex;
-  flex-direction: column;
-}
-table tbody td {
-  display: flex;
-  gap: 1rem;
-}
-table tbody td::before {
-  content: attr(data-content) ":";
-  display: inline-block;
-  color: #848C95;
+table tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.04);
 }
 table tr th,
 table tr td {
   padding: 1.2rem 0;
   text-align: left;
+  vertical-align: middle;
 }
 @media screen and (min-width: 800px) {
   table tr th,
   table tr td {
     padding: 1.2rem;
-  }
-}
-@media screen and (max-width: 800px) {
-  table tr {
-    border-bottom: 1px solid #848C95;
   }
 }
 table tr span {
@@ -291,6 +395,35 @@ table tr button {
   background: #848C95;
   border: none;
   border-radius: 50%;
+}
+@media screen and (max-width: 800px) {
+  table thead {
+    display: none;
+    border-bottom: 1px solid #848C95;
+  }
+  table tbody td {
+    display: flex;
+    gap: 1rem;
+  }
+  table tbody td::before {
+    content: attr(data-content) ":";
+    display: inline-block;
+    color: #848C95;
+  }
+  table tbody tr {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #848C95;
+  }
+}
+
+.site-main > section menu ul {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.site-main > section menu li {
+  line-height: 0;
 }
 
 ::placeholder {
@@ -383,18 +516,11 @@ p {
 }
 .admin-menu > div:last-of-type {
   display: flex;
-  gap: 1.2rem;
+  gap: 1.6rem;
   align-items: center;
   position: relative;
   margin-top: auto;
   margin-bottom: 0;
-}
-.admin-menu > div:last-of-type img {
-  display: block;
-  width: 2.4rem;
-  height: 2.4rem;
-  background: var(--theme-color-primary);
-  border-radius: 50%;
 }
 .admin-menu > div:last-of-type button {
   margin-left: auto;
@@ -404,8 +530,10 @@ p {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 1.6rem;
+  padding: 2rem 1.6rem;
   transform: translateY(-100%);
+  font-size: 1.3rem;
+  text-align: right;
   background: rgba(132, 140, 149, 0.12);
   border-radius: 0.4rem;
   transition: all 0.2s ease-out;
@@ -422,10 +550,19 @@ p {
   pointer-events: none;
 }
 
-.button-sidebar-expand {
-  position: absolute;
-  top: 1.2rem;
-  left: 1.2rem;
+.sidebar-current-user > a {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+.sidebar-current-user > a img {
+  display: block;
+  padding: 0.4rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  background: var(--theme-color-white);
+  border-radius: 50%;
+  object-fit: contain;
 }
 
 .screen-reader-text {

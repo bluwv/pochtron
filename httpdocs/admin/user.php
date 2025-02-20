@@ -2,49 +2,21 @@
 
 session_start();
 
+if ( $_SESSION['timeout'] < time() ) {
+	session_destroy();
+	header('Location: login.php');
+	exit();
+}
+
 /** Check que l'id existe
  * -> si existe afficher == ok
  * _> si existe pas affiche blanco
  * si vide blanco aussi
  */
 
-require_once '../../app/database.php';
+require_once 'app/database.php';
 
 if ( ! empty( $_GET['user_id'] )) {
-
-	// $sql = "SELECT id
-	// 	FROM wines
-	// 	WHERE id = " . $_GET['wine_id'];
-
-	// $stmt = $db->prepare($sql);
-	// $stmt->execute();
-	// $has_wine = $stmt->fetch();
-
-	// var_dump($has_wine);
-	// die();
-
-	// if ( $has_wine ) {
-		// header('Location:');
-		// exit();
-	// }
-
-	if ( ! empty( $_POST ) ) {
-		if ( ! empty($_POST['confirm_email']) ) {
-			die('No bots allowed here.');
-		}
-
-		$sql = "UPDATE users
-			SET name = :name, email = :email, password = :password WHERE id = :user_id";
-		$stmt = $db->prepare($sql);
-
-		$stmt->bindValue(':name', $_POST['name']);
-		$stmt->bindValue(':email', $_POST['email']);
-		$stmt->bindValue(':user_id', $_GET['user_id']);
-		$stmt->bindValue(':password', password_hash($_POST['password'], PASSWORD_BCRYPT));
-
-		$stmt->execute();
-	}
-
 	$sql = "SELECT *
 		FROM users
 		WHERE id = :user_id";
@@ -55,6 +27,36 @@ if ( ! empty( $_GET['user_id'] )) {
 
 	$stmt->execute();
 	$result = $stmt->fetch();
+}
+
+// UPDATE if submit and exist
+if ( ! empty( $_GET['user_id'] ) && ! empty( $_POST ) ) {
+	// Basic honeypot
+	if ( ! empty($_POST['confirm_email']) ) {
+		die('No bots allowed here.');
+	}
+
+	$name = htmlentities(trim($_POST['name']), ENT_QUOTES, 'UTF-8');
+	$email = htmlentities(trim($_POST['email']), ENT_QUOTES, 'UTF-8');
+	$password = htmlentities(trim($_POST['password']), ENT_QUOTES, 'UTF-8');
+	$password_confirmation = htmlentities(trim($_POST['confirm_password']), ENT_QUOTES, 'UTF-8');
+
+	if ( ! empty($password) & $password === $password_confirmation) {
+		$sql = "UPDATE users
+				SET name = :name, email = :email, password = :password WHERE id = :user_id";
+	} else {
+		$sql = "UPDATE users
+				SET name = :name, email = :email WHERE id = :user_id";
+	}
+
+	$stmt = $db->prepare($sql);
+
+	$stmt->bindValue(':name', $name);
+	$stmt->bindValue(':email', $email);
+	$stmt->bindValue(':user_id', $_GET['user_id']);
+	$stmt->bindValue(':password', password_hash($password, PASSWORD_BCRYPT));
+
+	$stmt->execute();
 }
 
 ?>
@@ -74,7 +76,12 @@ if ( ! empty( $_GET['user_id'] )) {
 		<main class="site-main">
 			<section class="edit-listing">
 				<header>
-					<h1>Ajouter un user</h1>
+					<?php if ( isset( $_GET['user_id'] ) ) : ?>
+						<h1>Modifier un user</h1>
+						<a class="button" href="user.php?post_type=user">Add new</a>
+					<?php else : ?>
+						<h1>Ajouter un user</h1>
+					<?php endif; ?>
 				</header>
 
 				<div>
@@ -109,7 +116,9 @@ if ( ! empty( $_GET['user_id'] )) {
 							<input id="confirm_password" type="password" name="confirm_password" placeholder="confirm_password" value="" required>
 						</div>
 
-						<button>Submit</button>
+						<div class="form-row form-row--submit">
+							<button class="button">Submit</button>
+						</div>
 					</form>
 				</div>
 			</section>

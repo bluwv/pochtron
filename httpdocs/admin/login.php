@@ -2,30 +2,34 @@
 
 session_start();
 
-if ( ! empty( $_SESSION ) && $_SESSION['token'] ) {
+if ( ! empty( $_SESSION ) && $_SESSION['timeout'] ) {
 	header('Location: list.php');
 	exit();
 }
 
-require_once '../../app/database.php';
+require_once 'app/database.php';
 
 if ( ! empty( $_POST ) ) {
 	// $_SESSION["login"] = $_POST['login'];
+
+	$username = htmlentities(trim($_POST['username']), ENT_QUOTES, 'UTF-8');
+	$password = htmlentities(trim($_POST['password']), ENT_QUOTES, 'UTF-8');
+
 	$sql = "SELECT id, login, password
 		FROM users
 		WHERE login = :login OR email = :email";
 
 	$stmt = $db->prepare($sql);
 
-	$value = array(':login' => $_POST['username'], ':email' => $_POST['username']);
+	$value = array(':login' => $username, ':email' => $username);
 
 	$stmt->execute( $value );
 	$user = $stmt->fetch();
 
-	if (password_verify($_POST['password'], $user->password)) {
+	if (password_verify($password, $user->password)) {
 		$_SESSION['user_id'] = $user->id;
 		$_SESSION['login'] = $user->login;
-		$_SESSION['token'] = time() + 60 * 60 * 24 * 2;
+		$_SESSION['timeout'] = time() + 60 * 60 * 24 * 2;
 
 		header('Location: list.php');
 		exit();

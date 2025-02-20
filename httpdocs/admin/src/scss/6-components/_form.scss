@@ -5,6 +5,11 @@ form {
 
 .form-row {
 	margin: 1.2rem 0;
+
+	&.form-row--submit,
+	&:last-of-type {
+		margin-top: 4rem;
+	}
 }
 
 label {
