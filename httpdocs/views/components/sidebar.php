@@ -1,17 +1,17 @@
 <?php
 
 $sql = "SELECT *
-		FROM users
-		WHERE id = :user_id";
+	FROM users
+	WHERE id = :user_id";
 
-	$stmt = $db->prepare($sql);
+$stmt = $db->prepare($sql);
 
-	$stmt->bindValue(':user_id', $_SESSION['user_id']);
+$stmt->bindValue(':user_id', $_SESSION['user_id']);
 
-	$stmt->execute();
-	$user = $stmt->fetch();
+$stmt->execute();
+$user = $stmt->fetch();
 
-	// var_dump($user);
+
 ?>
 
 <div class="admin-menu">
@@ -25,16 +25,16 @@ $sql = "SELECT *
 	<nav class="menu-primary menu">
 		<ul>
 			<li class="<?php echo ( ! isset( $_GET['post_type'] ) ) ? 'active' : ''; ?>">
-				<a href="">Tableau de bord</a>
+				<a href="#">Tableau de bord</a>
 			</li>
 			<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'wine' ) ? 'active' : ''; ?>">
-				<a href="list.php?post_type=wine">Vins</a>
+				<a href="/admin/wines/list?post_type=wine">Vins</a>
 			</li>
 			<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'producer' ) ? 'active' : ''; ?>">
-				<a href="domain.php?post_type=producer">Domaines</a>
+				<a href="/admin/domains/list?post_type=producer">Domaines</a>
 			</li>
 			<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'grape' ) ? 'active' : ''; ?>">
-				<a href="list.php?post_type=grape">Cépages</a>
+				<a href="/admin/grapes/list?post_type=grape">Cépages</a>
 			</li>
 		</ul>
 	</nav>
@@ -42,7 +42,7 @@ $sql = "SELECT *
 	<nav class="menu-secondary menu">
 		<ul>
 			<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'user' ) ? 'active' : ''; ?>">
-				<a href="users.php?post_type=user">Utilisateurs</a>
+				<a href="/admin/users/list?post_type=user">Utilisateurs</a>
 			</li>
 			<li>
 				<a href="#">Notifications</a>
@@ -57,8 +57,8 @@ $sql = "SELECT *
 	</nav>
 
 	<div class="sidebar-current-user">
-		<a href="user.php?post_type=user&user_id=<?php echo $user->id; ?>">
-			<img src="assets/icons/profile.svg" alt="">
+		<a href="/admin/user/edit?post_type=user&user_id=<?php echo $user->id; ?>">
+			<img src="https://pochtron.localhost/admin/assets/icons/profile.svg" alt="">
 			<p><?php echo $user->name; ?></p>
 		</a>
 
@@ -67,10 +67,10 @@ $sql = "SELECT *
 		<menu class="" data-reaction="user-action">
 			<ul>
 				<li>
-					<a href="user.php?post_type=user&user_id=<?php echo $user->id; ?>">Modifier le profil</a>
+					<a href="/admin/user/edit?post_type=user&user_id=<?php echo $user->id; ?>">Modifier le profil</a>
 				</li>
 				<li>
-					<a class="logout" href="logout.php">Déconnexion</a>
+					<a class="logout" href="/admin/logout">Déconnexion</a>
 				</li>
 			</ul>
 		</menu>

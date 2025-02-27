@@ -16,6 +16,19 @@ function loadView(string $path, array $args = []): void {
     }
 }
 
+function loadAdminView(string $path, array $args = []): void {
+    $file = __DIR__ . "/views/admin/$path.php";
+
+    if (file_exists($file)) {
+        $body_class = $path;
+        // include $file;
+        include __DIR__ . "/views/layouts/admin.php";
+    } else {
+        header("HTTP/1.1 404 Not Found");
+        echo "Erreur 404 : Page non trouvée";
+    }
+}
+
 /**
  * Make URL as smooth as possible for French speaker
  */
