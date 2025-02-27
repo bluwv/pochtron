@@ -38,6 +38,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			wineID = button.currentTarget.closest('[data-wineid]').dataset.wineid;
 			document.querySelector('[data-modal="delete"] [name="wine_id"]').value = wineID;
 
+			wineName = button.currentTarget.closest('[data-wineid]').dataset.wineName;
+			document.querySelector('[data-modal="delete"] p > span').innerText = wineName;
+
 			document.querySelector('[data-modal="delete"]').parentElement.classList.add('active');
 
 		});
@@ -50,6 +53,31 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			document.querySelector('[data-modal="delete"]').parentElement.classList.remove('active');
 
 		});
+	});
+
+	// TODO: do next weeks
+	// document.addEventListener('click', (event) => {
+	// 	if (document.querySelector('.modals').classList.contains('active')) {
+	// 		const isClickInside = document.querySelector('.modal').contains(event.target)
+
+	// 		if (!isClickInside) {
+	// 			console.log('click outside');
+
+	// 			// The click was OUTSIDE the specifiedElement, do something
+	// 		} else {
+	// 			console.log('click inside');
+
+	// 		}
+	// 	}
+	// });
+
+	/**
+	 * Remove modal on Escape key pressed
+	 */
+	document.addEventListener('keydown', function(e) {
+		if ( e.key === 'Escape' ) {
+			document.querySelector('[data-modal="delete"]').parentElement.classList.remove('active');
+		}
 	});
 
 

@@ -30,6 +30,7 @@ $router->get('/wines/{id}/{name}', function($id, $name) {
 $router->get('/admin/login', function() { loadAdminView('login'); });
 $router->post('/admin/login', function() { loadAdminView('login'); });
 $router->get('/admin/wines/list', function() { loadAdminView('list'); });
+$router->post('/admin/wines/list', function() { loadAdminView('list'); });
 $router->get('/admin/wines/edit', function() { loadAdminView('edit'); });
 $router->post('/admin/wines/edit', function() { loadAdminView('edit'); });
 $router->get('/admin/domains/list', function() { loadAdminView('domain'); });

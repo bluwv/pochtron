@@ -42,7 +42,8 @@ require_once '../app/database.php';
 		<?php if ( in_array($body_class, ['list', 'edit']) ) : ?>
 			<aside class="modals">
 				<section class="modal" data-modal="delete">
-					<p>Placeholder vraiment supprimer</p>
+					<p>Souhaitez-vous réellement supprimer “<span></span>” ?</p>
+					<p>Cette action est irréversible.</p>
 
 					<form action="/admin/wines/list" method="POST" novalidate>
 						<input type="hidden" name="wine_id" value="">

@@ -25,6 +25,14 @@
 	}
 }
 
+.site-main.login {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+}
+
 .login-box {
 	margin: 0 auto;
 	padding: 6rem 6rem 5rem;

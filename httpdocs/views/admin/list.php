@@ -57,7 +57,7 @@ if ( isset( $_POST['delete'] ) && isset( $_POST['wine_id'] ) ) {
 
 			<tbody>
 				<?php foreach ( $results as $result ) : ?>
-					<tr data-wineID="<?php echo $result->wine_id; ?>">
+					<tr data-wineID="<?php echo $result->wine_id; ?>" data-wine-name="<?php echo $result->name; ?>">
 						<td data-content="Nom">
 							<a href="/admin/wines/edit?post_type=wine&wine_id=<?php echo $result->wine_id; ?>"><?php echo $result->name; ?></a>
 						</td>

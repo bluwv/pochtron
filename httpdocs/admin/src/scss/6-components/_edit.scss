@@ -20,7 +20,7 @@
 .admin {
 	background: var(--theme-color-black);
 
-	.site-main {
+	.site-main:not(.login) {
 		display: flex;
 		justify-content: flex-end;
 
