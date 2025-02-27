@@ -5,13 +5,13 @@
 		<nav class="menu-primary menu">
 			<ul>
 				<li>
-					<a href="catalogue.php">Boutique</a>
+					<a href="catalogue">Boutique</a>
 				</li>
 				<li>
-					<a href="blog.php">Blog</a>
+					<a href="blog">Blog</a>
 				</li>
 				<li>
-					<a href="contact.php">Contact</a>
+					<a href="contact">Contact</a>
 				</li>
 			</ul>
 		</nav>
@@ -30,10 +30,13 @@
 <div class="breadcrumbs">
 	<ol>
 		<li>
-			<a href="">Accueil</a>
+			<a href="/">Accueil</a>
 		</li>
 		<li>
-			<span>Catalogue</span>
+			<a href="/catalogue">Catalogue</a>
+		</li>
+		<li>
+			<span>Nom du vin</span>
 		</li>
 	</ol>
 </div>
