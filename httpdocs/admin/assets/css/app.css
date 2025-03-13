@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 :root {
   --theme-color-primary: #203EFF;
+  --theme-color-primary--100: rgba(32, 62, 255, 0.2);
   --theme-color-secondary: #208FFF;
   --theme-color-grey: rgba(148, 157, 165, 0.08);
   --theme-color-black: #101820;
@@ -224,6 +225,59 @@ input {
 
 .honeypot {
   display: none;
+}
+
+.form-row--radios {
+  padding: 2rem 2.4rem;
+  background-color: var(--theme-color-grey);
+  border-radius: 0.4rem;
+}
+.form-row--radios > div:not(:first-child) {
+  margin-top: 0.8rem;
+}
+.form-row--radios > div:not(:last-child) {
+  margin-bottom: 0.8rem;
+}
+.form-row--radios input {
+  display: none;
+}
+.form-row--radios input + label {
+  display: flex;
+  gap: 0.8rem;
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+}
+.form-row--radios input + label::before {
+  content: "";
+  display: block;
+  width: 1em;
+  height: 1em;
+  border: 1px solid var(--theme-color-primary);
+  border-radius: 2px;
+  transition: all 0.2s ease-in-out;
+}
+.form-row--radios input + label::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0.4em;
+  left: 0.6em;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 0.4em;
+  height: 1em;
+  border-bottom: 2px solid White;
+  border-right: 2px solid White;
+  transition: all 0.2s ease-in-out;
+}
+.form-row--radios input + label:hover::before {
+  background: var(--theme-color-primary--100);
+}
+.form-row--radios input:checked + label::before {
+  background: var(--theme-color-primary);
+}
+.form-row--radios input:not(:checked) + label::after {
+  opacity: 0;
 }
 
 #app {

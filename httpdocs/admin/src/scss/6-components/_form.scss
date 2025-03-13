@@ -37,3 +37,73 @@ input {
 .honeypot {
 	display: none;
 }
+
+.form-row--radios {
+	padding: 2rem 2.4rem;
+	background-color: var(--theme-color-grey);
+	border-radius: .4rem;
+
+	& > div {
+		&:not(:first-child) {
+			margin-top: .8rem;
+		}
+
+		&:not(:last-child) {
+			margin-bottom: .8rem;
+		}
+	}
+
+	input {
+		display: none;
+	}
+
+	input + label {
+		display: flex;
+		gap: .8rem;
+		position: relative;
+		padding: 0;
+		cursor: pointer;
+
+		&::before {
+			content: "";
+			display: block;
+			width: 1em;
+			height: 1em;
+			border: 1px solid var(--theme-color-primary);
+			border-radius: 2px;
+			transition: all .2s ease-in-out;
+		}
+
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			top: .4em;
+			left: .6em;
+			transform: translate(-50%, -50%) rotate(45deg);
+			width: .4em;
+			height: 1em;
+			border-bottom: 2px solid White;
+			border-right: 2px solid White;
+			transition: all .2s ease-in-out;
+		}
+
+		&:hover {
+			&::before {
+				background: var(--theme-color-primary--100);
+			}
+		}
+	}
+
+	input:checked + label {
+		&::before {
+			background: var(--theme-color-primary);
+		}
+	}
+
+	input:not(:checked) + label {
+		&::after {
+			opacity: 0;
+		}
+	}
+}

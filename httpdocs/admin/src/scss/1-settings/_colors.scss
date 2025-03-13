@@ -8,6 +8,7 @@ $CamaronPink: #FF818B;
 
 :root {
 	--theme-color-primary: #{ $VividBlue };
+	--theme-color-primary--100: #{ rgba($VividBlue, .2) };
 	--theme-color-secondary: #{ $ClearChill };
 
 	--theme-color-grey: #{ $SoftPumice };

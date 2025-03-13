@@ -44,7 +44,10 @@ if ( ! empty( $_GET['user_id'] ) && ! empty( $_POST ) ) {
 	$stmt->bindValue(':name', $name);
 	$stmt->bindValue(':email', $email);
 	$stmt->bindValue(':user_id', $_GET['user_id']);
-	$stmt->bindValue(':password', password_hash($password, PASSWORD_BCRYPT));
+
+	if ( ! empty($password) & $password === $password_confirmation) {
+		$stmt->bindValue(':password', password_hash($password, PASSWORD_BCRYPT));
+	}
 
 	$stmt->execute();
 }
@@ -62,7 +65,7 @@ if ( ! empty( $_GET['user_id'] ) && ! empty( $_POST ) ) {
 	</header>
 
 	<div>
-		<form action="#" method="POST" novalidate>
+		<form action="" method="POST" novalidate>
 			<div class="form-row">
 				<label for="name">Nom</label>
 				<input id="name" type="text" name="name" placeholder="name" value="<?php echo (! empty($result)) ? $result->name : ""; ?>" required>
@@ -94,7 +97,7 @@ if ( ! empty( $_GET['user_id'] ) && ! empty( $_POST ) ) {
 			</div>
 
 			<div class="form-row form-row--submit">
-				<button class="button">Submit</button>
+				<button class="button" type="submit">Submit</button>
 			</div>
 		</form>
 	</div>

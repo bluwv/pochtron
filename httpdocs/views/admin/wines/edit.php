@@ -11,7 +11,7 @@
 
 // SELECT
 if ( ! empty( $_GET['wine_id'] ) ) {
-	$sql = "SELECT wines.id as wine_id, wines.name, grapes.color, producers.domain, producers.region, wines.year, wines.price, wines.format, wines.stock, grapes.name as grapes_name
+	$sql = "SELECT wines.id as wine_id, wines.name, grapes.color, producers.domain, producers.region, wines.year, wines.price, wines.format, wines.stock, grapes.name as grapes_name, wines.id_grapes
 		FROM wines
 		LEFT JOIN producers ON wines.id_producer = producers.id
 		LEFT JOIN grapes ON wines.id_grapes = grapes.id
@@ -21,6 +21,13 @@ if ( ! empty( $_GET['wine_id'] ) ) {
 	$stmt->execute();
 	$result = $stmt->fetch();
 }
+
+$sql = "SELECT grapes.id, grapes.name, grapes.color
+	FROM grapes";
+
+$stmt = $db->prepare($sql);
+$stmt->execute();
+$grapes = $stmt->fetchAll();
 
 // DELETE
 if ( isset( $_POST['delete'] ) ) {
@@ -41,9 +48,10 @@ if ( ! empty( $_GET['wine_id'] ) && ! empty( $_POST ) ) {
 	$price = htmlentities(trim($_POST['price']), ENT_QUOTES, 'UTF-8');
 	$format = htmlentities(trim($_POST['format']), ENT_QUOTES, 'UTF-8');
 	$stock = htmlentities(trim($_POST['stock']), ENT_QUOTES, 'UTF-8');
+	$id_grapes = serialize($_POST['grapes_id']);
 
 	$sql = "UPDATE wines
-		SET name = :name, year = :year, price = :price, format = :format, stock = :stock
+		SET name = :name, year = :year, price = :price, format = :format, stock = :stock, id_grapes = :id_grapes
 		WHERE id = :wine_id";
 
 	$stmt = $db->prepare($sql);
@@ -54,8 +62,11 @@ if ( ! empty( $_GET['wine_id'] ) && ! empty( $_POST ) ) {
 	$stmt->bindValue(':format', $format);
 	$stmt->bindValue(':stock', $stock);
 	$stmt->bindValue(':wine_id', $_GET['wine_id']);
+	$stmt->bindValue(':id_grapes', $id_grapes);
 
 	$stmt->execute();
+	header("Location: /admin/wines/edit?post_type=wine&wine_id=" . $_GET['wine_id']);
+	exit();
 }
 
 // INSERT INTO si on submit un "wine" vide
@@ -65,9 +76,10 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 	$price = htmlentities(trim($_POST['price']), ENT_QUOTES, 'UTF-8');
 	$format = htmlentities(trim($_POST['format']), ENT_QUOTES, 'UTF-8');
 	$stock = htmlentities(trim($_POST['stock']), ENT_QUOTES, 'UTF-8');
+	$id_grapes = serialize($_POST['grapes_id']);
 
-	$sql = "INSERT INTO wines (name, year, price, format, stock)
-		VALUES (:name, :year, :price, :format, :stock)";
+	$sql = "INSERT INTO wines (name, year, price, format, stock, id_grapes)
+		VALUES (:name, :year, :price, :format, :stock, :id_grapes)";
 
 	$stmt = $db->prepare($sql);
 
@@ -77,6 +89,7 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 	$stmt->bindValue(':price', $price);
 	$stmt->bindValue(':format', $format);
 	$stmt->bindValue(':stock', $stock);
+	$stmt->bindValue(':id_grapes', $id_grapes);
 	// $stmt->bindValue(':stars', $_POST['wine_id']);
 	// $stmt->bindValue(':notes', $_POST['wine_id']);
 
@@ -137,7 +150,17 @@ if ( ! empty($_POST) && empty( $_GET['wine_id'] ) ) {
 
 			<div class="form-row">
 				<label for="stock">Stock</label>
-				<input id="stock" type="text" name="stock" placeholder="stock" value="<?php echo (! empty($result)) ?$result->stock : ""; ?>" required>
+				<input id="stock" type="text" name="stock" placeholder="stock" value="<?php echo (! empty($result)) ? $result->stock : ""; ?>" required>
+			</div>
+
+			<div class="form-row form-row--radios">
+				<?php foreach ($grapes as $grape) :
+					?>
+					<div>
+						<input id="grape_<?php echo $grape->id; ?>" type="checkbox" name="grapes_id[]" value="<?php echo $grape->id; ?>" <?php if (! empty( $_GET['wine_id'] ) && in_array($grape->id, unserialize($result->id_grapes))) { echo "checked"; } ?>>
+						<label for="grape_<?php echo $grape->id; ?>"><?php echo $grape->name; ?> (<?php echo $grape->color; ?>)</label>
+					</div>
+				<?php endforeach ?>
 			</div>
 
 			<!-- <div class="form-row">

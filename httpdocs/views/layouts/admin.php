@@ -55,6 +55,22 @@ require_once '../app/database.php';
 			</aside>
 		<?php endif; ?>
 
+		<?php if ( in_array($body_class, ['wines/list', 'wines/edit', 'grapes/list', 'grapes/edit']) ) : ?>
+			<aside class="modals">
+				<section class="modal" data-modal="delete">
+					<p>Souhaitez-vous réellement supprimer “<span></span>” ?</p>
+					<p>Cette action est irréversible.</p>
+
+					<form action="" method="POST" novalidate>
+						<input type="hidden" name="item_id" value="">
+
+						<button class="button-cancel button" type="button" data-cancel="modal">Annuler</button>
+						<button class="button-delete button" type="submit" name="delete">Delete ?</button>
+					</form>
+				</section>
+			</aside>
+		<?php endif; ?>
+
 		<?php // include_once 'views/layouts/footer.php'; ?>
 	</div>
 

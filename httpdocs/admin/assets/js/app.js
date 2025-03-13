@@ -30,16 +30,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	});
 
 	// MODAL
-	let wineID;
+	let itemID;
 	document.querySelectorAll('[data-show="delete"]').forEach(modal => {
 		modal.addEventListener('click', (button) => {
 			button.preventDefault();
 
-			wineID = button.currentTarget.closest('[data-wineid]').dataset.wineid;
-			document.querySelector('[data-modal="delete"] [name="wine_id"]').value = wineID;
+			itemID = button.currentTarget.closest('[data-item-id]').dataset.itemId;
+			console.log(itemID);
 
-			wineName = button.currentTarget.closest('[data-wineid]').dataset.wineName;
-			document.querySelector('[data-modal="delete"] p > span').innerText = wineName;
+			document.querySelector('[data-modal="delete"] [name="item_id"]').value = itemID;
+
+			itemName = button.currentTarget.closest('[data-item-id]').dataset.itemName;
+			document.querySelector('[data-modal="delete"] p > span').innerText = itemName;
 
 			document.querySelector('[data-modal="delete"]').parentElement.classList.add('active');
 
