@@ -416,6 +416,12 @@ input {
   border-color: var(--theme-color-primary);
 }
 
+.product-thumbnail img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 table {
   margin: 0 -1.2rem;
   width: calc(100% + 2.4rem);

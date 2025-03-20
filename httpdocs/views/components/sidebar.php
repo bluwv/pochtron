@@ -1,8 +1,9 @@
 <?php
 
-$sql = "SELECT *
-	FROM users
-	WHERE id = :user_id";
+$sql = "SELECT u.id, u.email, u.name, r.name as role
+	FROM users u
+	LEFT JOIN user_role r ON r.id = u.id_role
+	WHERE u.id = :user_id";
 
 $stmt = $db->prepare($sql);
 
@@ -10,7 +11,6 @@ $stmt->bindValue(':user_id', $_SESSION['user_id']);
 
 $stmt->execute();
 $user = $stmt->fetch();
-
 
 ?>
 
@@ -41,25 +41,31 @@ $user = $stmt->fetch();
 
 	<nav class="menu-secondary menu">
 		<ul>
-			<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'user' ) ? 'active' : ''; ?>">
-				<a href="/admin/users/list?post_type=user">Utilisateurs</a>
-			</li>
+			<?php if ( $user->role == "admin" ) : ?>
+				<li class="<?php echo ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'user' ) ? 'active' : ''; ?>">
+					<a href="/admin/users/list?post_type=user">Utilisateurs</a>
+				</li>
+			<?php endif; ?>
 			<li>
 				<a href="#">Notifications</a>
 			</li>
-			<li>
-				<a href="#">Paramètres</a>
-			</li>
+			<?php if ( $user->role == "admin" ) : ?>
+				<li>
+					<a href="#">Paramètres</a>
+				</li>
+			<?php endif; ?>
+			<?php if ( $user->role != "admin" ) : ?>
 			<li>
 				<a href="#">Aide</a>
 			</li>
+			<?php endif; ?>
 		</ul>
 	</nav>
 
 	<div class="sidebar-current-user">
 		<a href="/admin/user/edit?post_type=user&user_id=<?php echo $user->id; ?>">
 			<img src="https://pochtron.localhost/admin/assets/icons/profile.svg" alt="">
-			<p><?php echo $user->name; ?></p>
+			<p><?php echo $user->name; ?> (<?php echo $user->role; ?>)</p>
 		</a>
 
 		<button class="button-sidebar button" data-action="user-action">…</button>

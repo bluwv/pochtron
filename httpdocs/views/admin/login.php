@@ -29,6 +29,8 @@ if ( ! empty( $_POST ) ) {
 
 		header('Location: /admin/wines/list');
 		exit();
+	} else {
+		// Wrong password message
 	}
 }
 
@@ -46,7 +48,7 @@ if ( ! empty( $_POST ) ) {
 
 		<div class="form-row">
 			<label for="password">password</label>
-			<input  id="password" type="password" name="password" placeholder="******" required>
+			<input id="password" type="password" name="password" placeholder="******" required>
 		</div>
 
 		<!-- <input type="submit" value="Login"> -->
@@ -55,3 +57,17 @@ if ( ! empty( $_POST ) ) {
 
 	<a class="link-reset-password" href="#">I lost password</a>
 </section>
+
+<script>
+	document.querySelectorAll('[type="password"]').forEach((input) => {
+		var toggleButton = document.createElement('button');
+		toggleButton.type = 'button';
+		toggleButton.textContent = "Afficher/Masquer";
+
+		input.parentNode.insertBefore(toggleButton,input.nextSibling);
+
+		toggleButton.addEventListener("click", function () {
+			input.type = input.type === "password" ? "text" : "password";
+		});
+	});
+</script>
